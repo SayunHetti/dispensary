@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authroutes from './routes/authentication.route.js';
 import userRoutes from './routes/user.route.js';
-
+import path from 'path';
 const app = express();
 
 dotenv.config();
@@ -44,3 +44,9 @@ app.use((err, req, res, next) => {
     message,
   });
 });
+
+
+app.use(express.static("./vite-project/build"))
+app.get("*",(req,res)=>{
+  res.sendFile(path.resolve(__dirname,"client","build","index.html"))
+})
