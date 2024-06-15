@@ -3,14 +3,10 @@ import User from '../models/user.model.js';
 
 import bcryptjs from 'bcryptjs';
 import { errorHandler } from '../utils/error.js';
-
 import jwt from 'jsonwebtoken';
 
 export const register = async (req, res, next) => {
-    const {email, password, Mobile_Number, Last_Name, First_Name,profilePhoto} = req.body;
-    const multer = require('multer');
-    const path = require('path');
-    const fs = require('fs');
+    const {  email, password, Mobile_Number, Last_Name, First_Name,profilePhoto} = req.body;
 
     // Check if any required field is missing or empty
     if ( !email || !password || !First_Name || !Last_Name || !Mobile_Number  ) {
@@ -18,7 +14,6 @@ export const register = async (req, res, next) => {
     }
 
     const hashedPassword = bcryptjs.hashSync(password,10);
-
     // Create user instance
     const newUser = new User({
         
@@ -27,19 +22,18 @@ export const register = async (req, res, next) => {
         First_Name,
         Last_Name,
         Mobile_Number,
-        profilePhotoLink
+        profilePhoto
     });
     
     try {
         // Save  user info to the database
-        
         await newUser.save();
 
   
         res.json('Registration successful');
     } catch (error) {
         // error thing
-        next(errorHandler(400, 'User already Exsist'));
+        next(errorHandler(400, 'User already Exsists'));
     }
 };
 
